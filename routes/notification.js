@@ -21,7 +21,10 @@ module.exports = (client) => {
       
         console.log("Message sent...?");
   
-        res.sendStatus(200);
+        res.status(200).send('SMS successfully sent')
+      } else {
+        console.log("Request body did not contain notificationMessage or userPhoneNumber")
+        res.status(400).send('Request did not contain notificationMessage or userPhoneNumber')
       }
 
   });
