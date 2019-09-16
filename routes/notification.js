@@ -9,7 +9,6 @@ module.exports = (client) => {
     console.log('REQUEST_BODY: ', req.body);
 
     // notificationMessage & userPhoneNumber
-
     if (req.body.hasOwnProperty('notificationMessage') && req.body.hasOwnProperty('userPhoneNumber')) {
       client.messages
         .create({
@@ -17,16 +16,15 @@ module.exports = (client) => {
           from: process.env.TWILIO_FROM_NUMBER,
           to: req.body.userPhoneNumber
         })
-        .then(message => console.log(message.sid));
-      
+        .then(message => {
+          console.log('Message SID: ', message.sid)
+          res.status(200).send(`SMS successfully sent to ${req.body.userPhoneNumber}`);      
+        });
         console.log("Message sent...?");
-  
-        res.status(200).send('SMS successfully sent')
-      } else {
-        console.log("Request body did not contain notificationMessage or userPhoneNumber")
-        res.status(400).send('Request did not contain notificationMessage or userPhoneNumber')
-      }
-
+    } else {
+      console.log("Request body did not contain notificationMessage or userPhoneNumber")
+      res.status(400).send('Request did not contain notificationMessage or userPhoneNumber')
+    }
   });
 
   return router;
